@@ -60,10 +60,10 @@ def charSelect():
             userstr = "Monk Fighter"
     else:
         character = int(input("Please enter 1 or 2 to pick your fighter \n 1: Ranged \n 2: Close Combat \n"))
-
-def fight(x):
+def opp(x):
     i=0
     global opponentstr
+    global opponent
     global outcome
     outcome = ""
     if x == 1 or x == 7: 
@@ -84,8 +84,13 @@ def fight(x):
     elif x == 6:      
         opponent = FireWizard
         opponentstr = "Evil Fire Wizard"
+def fight():
+    i=0
+    global opponentstr
+    global outcome
+    outcome = ""
     print("  ________________________________________________")
-    print(" | You encountered a roaming Evil %s      |"%(opponentstr))
+    print(" | You encountered a roaming %s      |"%(opponentstr))
     print(" |________________________________________________|")
     while(user.hp > 0):
         outcome = "fighting"
@@ -102,10 +107,12 @@ def fight(x):
                         print("%s has %s armor and %s hp left\n____________________________"% (opponentstr,opponent.armor,opponent.hp))
                 if opponent.armor <= 0:
                     opponent.hp = opponent.hp - user.dmg
-                    print("%s has 0 armor and %s hp left\n____________________________" % (opponentstr,opponent.hp))
                     if opponent.hp <= 0: 
+                        print("%s has 0 armor and 0 hp left\n____________________________" % (opponentstr))
                         outcome == "win"
                         break
+                    if opponent.hp > 0: 
+                        print("%s has 0 armor and %s hp left\n____________________________" % (opponentstr,opponent.hp))
                 if opponent.hp <= 0: 
                     outcome == "win"
                     break
@@ -158,11 +165,12 @@ def game():
                 if userClass == "Wizard":
                     user.dmg = user.dmg+20 
                     user.item = "「Elder Wand」" 
-            else:
+            if itemchance <= 20 and itemchance < 0:
                 print("You found nothing :(\n")
         if activity == 2:
             oppselect = int(random.random()*10)
-            fight(oppselect)
+            opp(oppselect)
+            fight()
             if outcome == "death":
                 print("YOU DIED")
                 break
@@ -172,7 +180,7 @@ def game():
                 print("You ran away like the coward you are")    
         if activity == 3:
             print("Class: %s \nType: %s \nAttack: %s \nHitpoints: %s \nArmor: %s \nItem: %s " % (userClass,userstr,user.dmg,user.hp,user.armor,user.item))
-        if activity ==4: 
+        if activity == 4: 
             if user.hp <= 100:
                 user.hp += 20
             if user.hp >= 100: 
